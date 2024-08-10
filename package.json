@@ -1,0 +1,26 @@
+{
+  "name": "nude-data",
+  "version": "0.0.1",
+  "description": "A standalone web component to display data in a readable way",
+  "main": "src/nude-data.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nudeui/nude-data.git"
+  },
+  "keywords": [
+    "data",
+    "JSON"
+  ],
+  "author": "Lea Verou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nudeui/nude-data/issues"
+  },
+  "homepage": "https://github.com/nudeui/nude-data#readme",
+  "devDependencies": {
+    "release-it": "^17.6.0"
+  }
+}
