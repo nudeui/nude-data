@@ -1,0 +1,63 @@
+{
+	number: 2,
+	boolean_true: true,
+	boolean_false: false,
+	empty: null,
+	date_string: "2023-12-01",
+	date: new Date("2023-12-01"),
+	regex: /hello/i,
+	string: "Hello world!",
+	array_of_numbers: [1, 2, 3],
+	set: new Set([1, 2, 3, 3, 2]),
+	object: {
+		"key": "value",
+		"nested": {
+			"key": "value"
+		}
+	},
+	map: new Map([
+		["key1", "value1"],
+		["key2", "value2"]
+	]),
+	nan: NaN,
+	array_of_objects: [
+		{
+			"decision": "Should I go to the party?",
+			"answer": null,
+			"score": null,
+			"pro": [
+				{
+					"argument": "Fun with friends!",
+					"weight": 3
+				}
+			],
+			"con": [
+				{
+					"argument": "I have tons of work",
+					"weight": 1
+				},
+				{
+					"argument": "I will need to buy a present",
+					"weight": 1
+				}
+			]
+		},
+		{
+			"decision": "Should I move?",
+			"answer": null,
+			"score": null,
+			"pro": [
+				{
+					"argument": "Reduced rent by $500",
+					"weight": 2
+				}
+			],
+			"con": [
+				{
+					"argument": "Expensive moving costs",
+					"weight": 3
+				}
+			]
+		}
+	]
+}

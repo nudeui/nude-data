@@ -1,0 +1,407 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+:host {
+	display: block;
+	width: fit-content;
+	max-width: 100%;
+
+	/* Core colors */
+	--color-red: oklch(55% 0.2 25);
+	--color-orange: oklch(70% 0.185 58);
+	--color-yellow: oklch(88% 0.2 95);
+	--color-green: oklch(65% 0.21 130);
+	--color-cyan: oklch(65% 0.15 210);
+	--color-blue: oklch(60% 0.2 250);
+	--color-purple: oklch(55% 0.2 330);
+	--color-magenta: oklch(65% 0.25 8);
+	--color-neutral: oklch(50% 0.03 240);
+
+	--color-neutral-30: oklch(from var(--color-neutral) 30% calc(c * .9) h);
+	--color-neutral-50: var(--color-neutral);
+	--color-neutral-60: oklch(from var(--color-neutral) 60% calc(c * .9) h);
+	--color-neutral-70: oklch(from var(--color-neutral) 70% calc(c * .7) h);
+	--color-neutral-80: oklch(from var(--color-neutral) 80% calc(c * .6) h);
+	--color-neutral-90: oklch(from var(--color-neutral) 90% calc(c * .35) h);
+	--color-neutral-95: oklch(from var(--color-neutral) 97% calc(c * .2) h);
+
+	--color-red-30: oklch(from var(--color-red) 30% calc(c * .7) h);
+	--color-red-30: oklch(from var(--color-red) 40% calc(c * .7) h);
+	--color-red-80: oklch(from var(--color-red) 80% calc(c * .7) h);
+
+	--color-green-40: oklch(from var(--color-green) 40% calc(c * .7) h);
+
+	--color-blue-30: oklch(from var(--color-blue) 30% calc(c * .7) h);
+	--color-blue-50: oklch(from var(--color-blue) 50% calc(c * .9) h);
+}
+
+details:where([part~="object"], [part~="list"]) {
+	&[open] {
+		width: 100%;
+	}
+
+	> summary {
+		color: var(--color-neutral);
+		font-weight: 600;
+		font-size: 80%;
+		text-transform: uppercase;
+
+		&::before {
+			content: var(--type-description);
+		}
+	}
+
+	[part~="meta"] {
+		color: var(--color-neutral-30);
+		text-transform: initial;
+		font-weight: normal;
+		font-style: italic;
+		font-size: 105%;
+
+		&::before {
+			content: "(";
+		}
+
+		&::after {
+			content: ")";
+		}
+	}
+
+	&:is(#data-tree > *) {
+		> summary {
+			display: block;
+		}
+
+		> dl {
+			margin: 0;
+		}
+	}
+}
+
+details[part~="object"] {
+	--type-description: "Group";
+
+	[part~="properties"] {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		color: var(--color-neutral-30);
+
+		&:where([open] > summary > *) {
+			display: none;
+		}
+	}
+}
+
+details[part~="list"] {
+	--type-description: "List";
+
+	[part~="items"] {
+		color: var(--color-neutral-30);
+
+		&::after {
+			content: var(--items-suffix, "") ")";
+		}
+	}
+}
+
+dl {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	margin-inline: .25em;
+	margin-block: .25em;
+
+	dt {
+		grid-column: 1;
+		color: var(--color-neutral-30);
+	}
+
+	dd {
+		grid-column: 2;
+	}
+}
+
+:host(:not([type])) {
+	dl {
+		border: 1px solid var(--color-neutral-80);
+
+		dt, dd {
+			padding: .2em .5em;
+
+			&:not(:last-of-type) {
+				border-bottom: 1px solid oklab(from var(--color-neutral-80) l a b / 50%);
+			}
+		}
+
+		dt {
+			grid-column: 1;
+			background: var(--color-neutral-95);
+			border-inline-end: 1px solid oklab(from var(--color-neutral-90) l a b / 50%);
+			color: var(--color-neutral-30);
+		}
+
+		dd {
+			grid-column: 2;
+		}
+	}
+}
+
+ol[part~="array"] {
+	counter-reset: array-index calc(var(--array-index-start, 1) - 1);
+
+	> li {
+		display: inline-flex;
+		counter-increment: array-index;
+	}
+
+	&:has([part~="object"], [part~="array"]) {
+		display: grid;
+		grid-template-columns: auto 1fr;
+
+		> li {
+			display: grid;
+			grid-template-columns: subgrid;
+			grid-column: 1 / -1;
+			align-items: baseline;
+			margin-block: .25em;
+
+			&:has(> details[open]) {
+				&:not(:first-child) {
+					margin-block-start: .5em;
+				}
+
+				&:not(:last-child) {
+					margin-block-end: .5em;
+				}
+			}
+
+			&::before {
+				content: counter(array-index);
+				padding-inline-end: .5em;
+				color: var(--color-neutral-80);
+				font-weight: bold;
+				font-size: 80%;
+			}
+		}
+	}
+
+	&:not(:has([part~="object"], [part~="list"])) {
+		/* List of primitives */
+		> li {
+			&:not(:last-child) {
+				&::after {
+					content: ",";
+					color: var(--color-neutral);
+				}
+			}
+
+			[part~="string"] {
+				&::before,
+				&::after {
+					content: open-quote;
+					color: var(--color-neutral-60);
+				}
+
+				&::after {
+					content: close-quote;
+				}
+			}
+		}
+	}
+}
+
+[part~="leaf"] {
+	&:empty {
+		&[part~="null"]::before {
+			content: "(Empty)";
+			font-style: italic;
+		}
+
+		&[part~="nan"]::before {
+			content: "⚠️ Invalid number";
+		}
+
+		&[part~="boolean"] {
+			&[value="true"]::before {
+				content: "✓";
+			}
+
+			&[value="false"]::before {
+				content: "✗";
+			}
+		}
+	}
+
+	&[part~="null"] {
+		color: var(--color-neutral-60);
+	}
+
+	&[part~="boolean"] {
+		font-weight: 600;
+
+		&[value="true"] {
+			color: var(--color-green);
+		}
+
+		&[value="false"] {
+			color: var(--color-red);
+		}
+	}
+
+	&[part~="number"] {
+		color: var(--color-blue-50);
+		font-weight: 550;
+
+		&[part~="nan"] {
+			color: var(--color-red);
+		}
+	}
+
+	&[part~="regexp"] {
+		color: var(--color-orange);
+		font-weight: bold;
+	}
+
+	&:is(#data-tree > *) {
+		font-size: 200%;
+		border: 1px solid var(--color-neutral-80);
+		padding: .25em .5em;
+	}
+}
+
+[part~="value"] {
+	border-radius: .05em;
+}
+
+[part~="selected"]:not(#data-tree > *) {
+	outline: 3px solid var(--color-blue);
+	outline-offset: 3px;
+}
+
+:host([type="code"]) {
+	display: block;
+	[part~=property],
+	[part~=leaf][part~=value] {
+		font-family: var(--font-mono, ui-monospace), monospace;
+	}
+
+	details {
+		display: inline;
+
+		> summary {
+			display: list-item inline;
+		}
+
+		&[open]::details-content {
+			display: inline !important;
+		}
+
+		&[part~="list"] {
+			> summary {
+				&::after {
+					content: "[";
+					color: var(--color-neutral-60);
+				}
+			}
+
+			&::after {
+				content: "]";
+				color: var(--color-neutral-60);
+			}
+		}
+
+		&[part~="object"] {
+			--type-description: "Object";
+		}
+
+		&[part~="map"] {
+			--type-description: "Map";
+		}
+
+		&[part~="set"] {
+			--type-description: "Set";
+		}
+
+		&[part~="array"] {
+			--type-description: "Array";
+		}
+	}
+
+	ol[part~="array"] {
+		display: inline;
+
+		> li {
+			display: inline;
+		}
+
+		> li:not(:last-child) {
+			&:not(:has(> details[open])) {
+				display: inline-flex;
+			}
+			&::after {
+				content: ",";
+				color: var(--color-neutral-70);
+			}
+		}
+	}
+
+	dl[part~="object"] {
+		display: inline;
+
+		&::before {
+			content: "{\A";
+			color: var(--color-neutral-80);
+			white-space: pre;
+		}
+
+		&::after {
+			content: "}";
+			color: var(--color-neutral-80);
+		}
+
+		dt, dd {
+			display: inline;
+		}
+
+		dt {
+			text-align: end;
+			margin-inline-start: 4ch;
+			color: var(--color-neutral);
+
+			&::before {
+				content: "\9";
+			}
+
+			&::after {
+				content: ": ";
+			}
+		}
+
+		dd:not(:last-of-type) {
+			&::after {
+				content: ",\A";
+				color: var(--color-neutral-70);
+				white-space: pre;
+			}
+		}
+	}
+
+	[part~=null],
+	[part~=undefined] {
+		font-weight: bold;
+	}
+
+	[part~=string] {
+		&::before,
+		&::after {
+			content: '"';
+			color: var(--color-neutral-60);
+		}
+	}
+}
+
+:host(:not([type])) {
+	--items-suffix: " items";
+}
