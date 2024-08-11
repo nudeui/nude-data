@@ -42,7 +42,7 @@ export default {
 		let depth = o.path.length;
 		o = {...o, parent: list};
 
-		return `<details part="list ${ type }"${ depth > 3 ? "" : " open"} data-depth="${ depth }">
+		return `<details part="list ${ type }"${ depth > 3 ? "" : " open"} data-depth="${ depth }" data-size="${ array.length }">
 		<summary>
 			<span part="items meta">${ array.length }</span>
 		</summary>

@@ -104,6 +104,10 @@ details[part~="list"] {
 		&::after {
 			content: var(--items-suffix, "") ")";
 		}
+
+		&:where([data-count="1"] > summary > *)::after {
+			content: var(--item-suffix, "") ")";
+		}
 	}
 }
 
@@ -404,4 +408,5 @@ ol[part~="array"] {
 
 :host(:not([type])) {
 	--items-suffix: " items";
+	--item-suffix: " item";
 }
