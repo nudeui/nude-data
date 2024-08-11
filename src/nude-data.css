@@ -105,7 +105,7 @@ details[part~="list"] {
 			content: var(--items-suffix, "") ")";
 		}
 
-		&:where([data-count="1"] > summary > *)::after {
+		&:where([data-size="1"] > summary > *)::after {
 			content: var(--item-suffix, "") ")";
 		}
 	}
