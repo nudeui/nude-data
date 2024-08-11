@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/nudeui/nude-data/issues"
   },
-  "homepage": "https://github.com/nudeui/nude-data#readme",
+  "homepage": "https://data.nudeui.com",
   "devDependencies": {
     "release-it": "^17.6.0"
   }

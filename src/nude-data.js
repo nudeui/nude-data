@@ -18,8 +18,7 @@ export default class DataTree extends HTMLElement {
 			fetch(this.getAttribute("src"))
 				.then(response => response.text())
 				.then(text => {
-					this.data = parse(text);
-					this.render(this.data);
+					this.renderText(text);
 				})
 				.catch(error => {
 					this.data = undefined;
